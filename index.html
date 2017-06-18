@@ -17,12 +17,11 @@
     <div id="title">
         <img src="/public/logo.png">
         <h1>Vue.js Cinema</h1>
-        <div>{{msg}}</div>
     </div>
     <div id="overview">
         <div class="main">
-            <movie-list></movie-list>
-            <movie-filter></movie-filter>
+            <movie-list :genre="genre" :time="time" :movies="movies"></movie-list>
+            <movie-filter @check-filter="checkFilter"></movie-filter>
         </div>
     </div>
 </div>

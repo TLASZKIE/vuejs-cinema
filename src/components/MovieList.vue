@@ -1,6 +1,15 @@
 <template>
   <div id="movie-list">
-  <movie-item v-for="movie in filteredMovies" :movie="movie.movie"></movie-item>
+    <div v-if="filteredMovies.length">
+      <movie-item v-for="movie in filteredMovies" :movie="movie.movie" :sessions="movie.sessions" :key="movie.id"></movie-item>
+    </div>
+    <div v-else-if="movies.length" class="no-results">
+      No results
+    </div>
+    <div v-else class="no-results">
+      Loading...
+    </div>
+    
   </div>
 </template>
 <script>
@@ -13,14 +22,15 @@ export default {
     }
   },
   computed: {
-    filteredMovies(){
-      if( this.genre.length === 0){
+    filteredMovies() {
+      if (this.genre.length === 0) {
         return this.movies
       }
-      return this.movies.filter(movie => this.genre.find(genre => genre == movie.Genre))
+      return this.movies.filter(movie => this.genre.find(
+          genre => movie.movie.Genre.indexOf(genre) > -1))
     }
   },
-  props: ['genre', 'time', 'movies'],
-  components: {MovieItem}
+  props: ['genre', 'time', 'movies', 'currentDate'],
+  components: { MovieItem }
 }
 </script>

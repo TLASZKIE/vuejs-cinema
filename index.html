@@ -14,16 +14,7 @@
 </head>
 <body>
 <div id="app">
-    <div id="title">
-        <img src="/public/logo.png">
-        <h1>Vue.js Cinema</h1>
-    </div>
-    <div id="overview">
-        <div class="main">
-            <movie-list :genre="genre" :time="time" :movies="movies"></movie-list>
-            <movie-filter @check-filter="checkFilter"></movie-filter>
-        </div>
-    </div>
+    <app :movies="movies" :date="Date.now()"></app>
 </div>
 <script src="/dist/build.js"></script>
 </body>

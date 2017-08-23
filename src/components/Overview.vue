@@ -1,20 +1,16 @@
 <template>
-  <div>
-    <div id="title">
-      <img src="/public/logo.png">
-      <h1>Vue.js Cinema</h1>
-    </div>
-    <div id="overview">
+  <div id="overview">
+      <day-select :selectedDay="day"></day-select>
       <div class="main">
         <movie-list :genre="genre" :time="time" :movies="movies" :day="day"></movie-list>
-        <movie-filter @check-filter="checkFilter"></movie-filter>
+        <movie-filter></movie-filter>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import MovieFilter from './MovieFilter.vue'
 import MovieList from './MovieList.vue'
+import DaySelect from './DaySelect.vue'
 
 export default {
   data() {
@@ -26,7 +22,8 @@ export default {
   },
   components: {
     MovieFilter,
-    MovieList
+    MovieList,
+    DaySelect
   },
   methods: {
     checkFilter(type, title, checked) {
@@ -38,8 +35,15 @@ export default {
           this[type].splice(index, 1)
         }
       }
+    },
+    daySelected(day){
+      this.day = day
     }
   },
-  props: ['movies', 'date']
+  props: ['movies', 'date'],
+  created(){
+    this.$bus.$on('check-filter', this.checkFilter)
+    this.$bus.$on('selected-day', this.daySelected)
+  }
 }
 </script>

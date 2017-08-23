@@ -13,8 +13,14 @@
     </style>
 </head>
 <body>
-<div id="app">
-    <app :movies="movies" :date="Date.now()"></app>
+<div id="app" v-cloak>
+    <div id="title">
+      <img src="/public/logo.png">
+      <h1>Vue.js Cinema</h1>
+    </div>
+    <keep-alive>
+        <router-view :movies="movies" :date="Date.now()"></router-view>
+    </keep-alive>
 </div>
 <script src="/dist/build.js"></script>
 </body>

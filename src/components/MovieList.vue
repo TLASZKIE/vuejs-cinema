@@ -1,10 +1,17 @@
 <template>
   <div id="movie-list">
     <div v-if="filteredMovies.length">
-      <movie-item v-for="movie in filteredMovies" :movie="movie.movie" :sessions="movie.sessions.filter(sessionPassesTimeFilter)" :day="day" :key="movie.id"></movie-item>
+      <movie-item v-for="movie in filteredMovies" :movie="movie.movie" :key="movie.id">
+        <div class="movie-sessions">
+        <div class="session-time-wrapper tooltip-wrapper" v-for="session in movie.sessions.filter(sessionPassesTimeFilter)" 
+        v-tooltip="{seats: session.seats}" :key="session.id">
+          <div class="session-time">{{formatSessionTime(session.time)}}</div>
+        </div>
+      </div>
+      </movie-item>
     </div>
     <div v-else-if="movies.length" class="no-results">
-      No results
+      {{noResults}}
     </div>
     <div v-else class="no-results">
       Loading...
@@ -24,6 +31,9 @@ export default {
     }
   },
   methods: {
+    formatSessionTime(time){
+      return this.$moment(time).format("HH:mm")
+    },
     moviePassesGenreFilter(movie) {
       if (!this.genre.length)
         return true
@@ -53,6 +63,11 @@ export default {
       return this.movies
         .filter(this.moviePassesGenreFilter)
         .filter(movie => movie.sessions.find(this.sessionPassesTimeFilter))
+    },
+    noResults(){
+      let times = this.time.join(', ')
+      let genres = this.genre.join(', ')
+      return `No result for ${times}${times.length && genres.length ? ', ' : ''}${genres}`
     }
   },
   props: ['genre', 'time', 'movies', 'day'],
